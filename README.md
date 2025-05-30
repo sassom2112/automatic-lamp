@@ -117,11 +117,3 @@ Have improvements? Found an app that needs to be added to the list? Submit a pul
 
 ⚠️ Disclaimer
 Use this script at your own risk. Always test in a non-production environment first. Some apps may be required in your environment or have downstream dependencies.
-
-yaml
-Copy
-Edit
-
----
-
-Let me know if you'd like a badge section (`PowerShell`, `Windows`, `License`, etc.) or want to break this out into a `docs/` folder for a GitHub Pages–friendly layout.
