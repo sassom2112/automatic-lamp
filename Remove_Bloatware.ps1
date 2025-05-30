@@ -1,25 +1,38 @@
 <#
 .SYNOPSIS
-Removes specified built-in Microsoft Store apps from the system for all users and future users.
+Removes specified built-in Microsoft Store apps from Windows.
 
 .DESCRIPTION
-This script removes installed and provisioned app packages. Supports logging, verbose output, and simulation mode.
+Removes installed and provisioned app packages for all current and future users.
+Can use a custom app list and simulate changes.
 
 .PARAMETER AppList
-Optional path to a text file containing one app name per line to override the default list.
+Optional path to a text file with one app name per line to override the default list.
 
 .PARAMETER WhatIf
-Simulates actions without making changes.
+Simulates the removal process without making any changes.
 
 .PARAMETER Verbose
-Displays detailed output of each step.
+Displays detailed information during execution.
 
 .PARAMETER LogOnly
-Logs actions that would be taken without performing them.
+Logs the removal actions without performing them.
 
 .EXAMPLE
-.\Remove-Bloatware.ps1 -AppList "C:\apps.txt" -Verbose
+.\Remove_Bloatware.ps1 -Verbose -WhatIf
+
+.EXAMPLE
+.\Remove_Bloatware.ps1 -AppList "C:\myapps.txt"
+
+.LINK
+https://github.com/sassom2112/automatic-lamp
+
+.NOTES
+Author: Michael Sasso
+Date: 2025-05-29
+Version: 1.0
 #>
+
 
 param (
     [string]$AppList,
