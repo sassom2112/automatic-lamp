@@ -3,11 +3,14 @@
 A PowerShell script that defines a reusable function `Remove-Bloatware` to safely remove built-in (preinstalled) Microsoft Store apps from Windows 10/11 for all users and future users. Supports verbose output, simulation mode, logging, and custom app lists.
 
 ---
-![PowerShell](https://img.shields.io/badge/PowerShell-5.1%20%7C%207+-blue.svg)
-![Platform](https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-lightgrey.svg)
-![License](https://img.shields.io/github/license/sassom2112/automatic-lamp)
-![Last Commit](https://img.shields.io/github/last-commit/sassom2112/automatic-lamp)
-![Issues](https://img.shields.io/github/issues/sassom2112/automatic-lamp)
+<p align="center">
+  <img src="https://img.shields.io/badge/PowerShell-5.1%20%7C%207+-blue?style=for-the-badge&logo=powershell" alt="PowerShell">
+  <img src="https://img.shields.io/badge/Platform-Windows%2010%20%7C%2011-lightgrey?style=for-the-badge" alt="Platform">
+  <img src="https://img.shields.io/github/license/sassom2112/automatic-lamp?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/github/last-commit/sassom2112/automatic-lamp?style=for-the-badge" alt="Last Commit">
+  <img src="https://img.shields.io/github/issues/sassom2112/automatic-lamp?style=for-the-badge" alt="Issues">
+</p>
+
 
 ---
 
