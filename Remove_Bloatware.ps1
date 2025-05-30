@@ -28,7 +28,8 @@ Logs the removal actions without performing them.
 https://github.com/sassom2112/automatic-lamp
 
 .NOTES
-Author: Michael Sasso
+Author: MikeS
+Author: RickS
 Date: 2025-05-29
 Version: 1.0
 #>
