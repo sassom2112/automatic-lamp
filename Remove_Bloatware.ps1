@@ -18,11 +18,11 @@ function Show-GreenBanner {
     \/___/   \/___/   \/_____/\/_/\/_/  \/_/  '\/__//__/  \/_/\/_/\/_/\/ /\/___/                                                 
 '@
     foreach ($line in $ascii -split "`n") {
-        Write-Host $line -ForegroundColor Green
+        Write-Lolcat $line -ForegroundColor Green
     }
-    Write-Host ""
-    Write-Host "Remove-Bloatware.ps1 by Mike & Rick" -ForegroundColor Green
-    Write-Host ""
+    Write-Lolcat ""
+    Write-Lolcat "Remove-Bloatware.ps1 by Mike & Rick" -ForegroundColor Green
+    Write-Lolcat ""
 }
 
 function Write-Lolcat {
@@ -32,10 +32,10 @@ function Write-Lolcat {
     $colorIndex = 0
 
     foreach ($char in $Text.ToCharArray()) {
-        Write-Host -NoNewline $char -ForegroundColor $colors[$colorIndex]
+        Write-Lolcat -NoNewline $char -ForegroundColor $colors[$colorIndex]
         $colorIndex = ($colorIndex + 1) % $colors.Count
     }
-    Write-Host ""
+    Write-Lolcat ""
 }
 
 function Remove-Bloatware {
@@ -121,7 +121,7 @@ Version: 1.0
     if ($AppList) {
         if (Test-Path $AppList) {
             $UninstallPackages = Get-Content $AppList | Where-Object { $_ -and $_ -notmatch '^#' }
-            Write-Host "Custom app list loaded from: $AppList"
+            Write-Lolcat "Custom app list loaded from: $AppList"
         } else {
             Write-Warning "App list file not found at: $AppList. Reverting to default list."
         }
@@ -134,12 +134,12 @@ Version: 1.0
     # === Remove Provisioned Packages ===
     foreach ($ProvPackage in $ProvisionedPackages) {
         $msg = "Removing provisioned package: $($ProvPackage.DisplayName)"
-        if ($Verbose) { Write-Host $msg }
-        if ($WhatIf -or $LogOnly) { Write-Host "WhatIf: $msg"; continue }
+        if ($Verbose) { Write-Lolcat $msg }
+        if ($WhatIf -or $LogOnly) { Write-Lolcat "WhatIf: $msg"; continue }
 
         try {
             Remove-AppxProvisionedPackage -PackageName $ProvPackage.PackageName -Online -ErrorAction Stop
-            Write-Host "Removed provisioned package: $($ProvPackage.DisplayName)"
+            Write-Lolcat "Removed provisioned package: $($ProvPackage.DisplayName)"
         } catch {
             Write-Warning "Failed to remove provisioned package: $($ProvPackage.DisplayName)"
         }
@@ -148,12 +148,12 @@ Version: 1.0
     # === Remove Installed Appx Packages ===
     foreach ($AppxPackage in $InstalledPackages) {
         $msg = "Removing Appx package: $($AppxPackage.Name)"
-        if ($Verbose) { Write-Host $msg }
-        if ($WhatIf -or $LogOnly) { Write-Host "WhatIf: $msg"; continue }
+        if ($Verbose) { Write-Lolcat $msg }
+        if ($WhatIf -or $LogOnly) { Write-Lolcat "WhatIf: $msg"; continue }
 
         try {
             Remove-AppxPackage -Package $AppxPackage.PackageFullName -ErrorAction Stop
-            Write-Host "Removed Appx package: $($AppxPackage.Name)"
+            Write-Lolcat "Removed Appx package: $($AppxPackage.Name)"
         } catch {
             Write-Warning "Failed to remove Appx package: $($AppxPackage.Name)"
         }
@@ -162,9 +162,9 @@ Version: 1.0
     # === End Transcript and Summary ===
     Stop-Transcript
 
-    Write-Host "Script complete."
-    Write-Host "Log file: $logPath"
-    Write-Host "Apps targeted for removal: $($UninstallPackages.Count)"
-    Write-Host "Done."
+    Write-Lolcat "Script complete."
+    Write-Lolcat "Log file: $logPath"
+    Write-Lolcat "Apps targeted for removal: $($UninstallPackages.Count)"
+    Write-Lolcat "Done."
 }
 
