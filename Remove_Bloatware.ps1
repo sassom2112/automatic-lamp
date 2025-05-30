@@ -18,10 +18,10 @@ function Show-GreenBanner {
     \/___/   \/___/   \/_____/\/_/\/_/  \/_/  '\/__//__/  \/_/\/_/\/_/\/ /\/___/                                                 
 '@
     foreach ($line in $ascii -split "`n") {
-        Write-Lolcat $line -ForegroundColor Green
+        Write-Lolcat $line
     }
     Write-Lolcat ""
-    Write-Lolcat "Remove-Bloatware.ps1 by Mike & Rick" -ForegroundColor Green
+    Write-Lolcat "Remove-Bloatware.ps1 by Mike & Rick"
     Write-Lolcat ""
 }
 
@@ -32,15 +32,14 @@ function Write-Lolcat {
     $colorIndex = 0
 
     foreach ($char in $Text.ToCharArray()) {
-        Write-Lolcat -NoNewline $char -ForegroundColor $colors[$colorIndex]
+        Write-Host -NoNewline $char -ForegroundColor $colors[$colorIndex]
         $colorIndex = ($colorIndex + 1) % $colors.Count
     }
-    Write-Lolcat ""
+    Write-Host ""
 }
 
 function Remove-Bloatware {
     Show-GreenBanner
-
 
 <#
 .SYNOPSIS
@@ -96,75 +95,93 @@ Version: 1.0
     $logPath = "$PSScriptRoot\AppRemovalLog_$timestamp.txt"
     Start-Transcript -Path $logPath
 
-    # === Default App List ===
-    $UninstallPackages = @(
-        "Microsoft.GetHelp",
-        "Microsoft.Getstarted",
-        "Microsoft.Microsoft3DViewer",
-        "Microsoft.MicrosoftOfficeHub",
-        "Microsoft.MicrosoftSolitaireCollection",
-        "Microsoft.MixedReality.Portal",
-        "Microsoft.OneConnect",
-        "Microsoft.WindowsFeedbackHub",
-        "Microsoft.Xbox.TCUI",
-        "Microsoft.XboxApp",
-        "Microsoft.XboxGameOverlay",
-        "Microsoft.XboxGamingOverlay",
-        "Microsoft.XboxIdentityProvider",
-        "Microsoft.XboxSpeechToTextOverlay",
-        "Microsoft.YourPhone",
-        "Microsoft.ZuneMusic",
-        "Microsoft.ZuneVideo"
-    )
+    try {
+        # === Default App List ===
+        $UninstallPackages = @(
+            "Microsoft.GetHelp",
+            "Microsoft.Getstarted",
+            "Microsoft.Microsoft3DViewer",
+            "Microsoft.MicrosoftOfficeHub",
+            "Microsoft.MicrosoftSolitaireCollection",
+            "Microsoft.MixedReality.Portal",
+            "Microsoft.OneConnect",
+            "Microsoft.WindowsFeedbackHub",
+            "Microsoft.Xbox.TCUI",
+            "Microsoft.XboxApp",
+            "Microsoft.XboxGameOverlay",
+            "Microsoft.XboxGamingOverlay",
+            "Microsoft.XboxIdentityProvider",
+            "Microsoft.XboxSpeechToTextOverlay",
+            "Microsoft.YourPhone",
+            "Microsoft.ZuneMusic",
+            "Microsoft.ZuneVideo"
+        )
 
-    # === Optional Custom List ===
-    if ($AppList) {
-        if (Test-Path $AppList) {
-            $UninstallPackages = Get-Content $AppList | Where-Object { $_ -and $_ -notmatch '^#' }
-            Write-Lolcat "Custom app list loaded from: $AppList"
-        } else {
-            Write-Warning "App list file not found at: $AppList. Reverting to default list."
+        # === Optional Custom List ===
+        if ($AppList) {
+            if (Test-Path $AppList) {
+                $UninstallPackages = Get-Content $AppList | Where-Object { $_ -and $_ -notmatch '^#' }
+                Write-Lolcat "Custom app list loaded from: $AppList"
+            } else {
+                Write-Warning "App list file not found at: $AppList. Reverting to default list."
+            }
         }
-    }
 
-    # === Get Installed and Provisioned Packages ===
-    $InstalledPackages = Get-AppxPackage -AllUsers | Where-Object { $UninstallPackages -contains $_.Name }
-    $ProvisionedPackages = Get-AppxProvisionedPackage -Online | Where-Object { $UninstallPackages -contains $_.DisplayName }
+        # === Get Installed and Provisioned Packages ===
+        $InstalledPackages = Get-AppxPackage -AllUsers | Where-Object { $UninstallPackages -contains $_.Name }
+        $ProvisionedPackages = Get-AppxProvisionedPackage -Online | Where-Object { $UninstallPackages -contains $_.DisplayName }
 
-    # === Remove Provisioned Packages ===
-    foreach ($ProvPackage in $ProvisionedPackages) {
-        $msg = "Removing provisioned package: $($ProvPackage.DisplayName)"
-        if ($Verbose) { Write-Lolcat $msg }
-        if ($WhatIf -or $LogOnly) { Write-Lolcat "WhatIf: $msg"; continue }
+        # === Remove Provisioned Packages ===
+        foreach ($ProvPackage in $ProvisionedPackages) {
+            $msg = "Removing provisioned package: $($ProvPackage.DisplayName)"
+            if ($Verbose) { Write-Lolcat $msg }
 
-        try {
-            Remove-AppxProvisionedPackage -PackageName $ProvPackage.PackageName -Online -ErrorAction Stop
-            Write-Lolcat "Removed provisioned package: $($ProvPackage.DisplayName)"
-        } catch {
-            Write-Warning "Failed to remove provisioned package: $($ProvPackage.DisplayName)"
+            if ($WhatIf) {
+                Write-Lolcat "WhatIf: $msg"
+                continue
+            }
+
+            if (-not $LogOnly) {
+                try {
+                    Remove-AppxProvisionedPackage -PackageName $ProvPackage.PackageName -Online -ErrorAction Stop
+                    Write-Lolcat "Removed provisioned package: $($ProvPackage.DisplayName)"
+                } catch {
+                    Write-Warning "Failed to remove provisioned package: $($ProvPackage.DisplayName)"
+                }
+            } else {
+                Write-Lolcat "LogOnly: $msg"
+            }
         }
-    }
 
-    # === Remove Installed Appx Packages ===
-    foreach ($AppxPackage in $InstalledPackages) {
-        $msg = "Removing Appx package: $($AppxPackage.Name)"
-        if ($Verbose) { Write-Lolcat $msg }
-        if ($WhatIf -or $LogOnly) { Write-Lolcat "WhatIf: $msg"; continue }
+        # === Remove Installed Appx Packages ===
+        foreach ($AppxPackage in $InstalledPackages) {
+            $msg = "Removing Appx package: $($AppxPackage.Name)"
+            if ($Verbose) { Write-Lolcat $msg }
 
-        try {
-            Remove-AppxPackage -Package $AppxPackage.PackageFullName -ErrorAction Stop
-            Write-Lolcat "Removed Appx package: $($AppxPackage.Name)"
-        } catch {
-            Write-Warning "Failed to remove Appx package: $($AppxPackage.Name)"
+            if ($WhatIf) {
+                Write-Lolcat "WhatIf: $msg"
+                continue
+            }
+
+            if (-not $LogOnly) {
+                try {
+                    Remove-AppxPackage -Package $AppxPackage.PackageFullName -ErrorAction Stop
+                    Write-Lolcat "Removed Appx package: $($AppxPackage.Name)"
+                } catch {
+                    Write-Warning "Failed to remove Appx package: $($AppxPackage.Name)"
+                }
+            } else {
+                Write-Lolcat "LogOnly: $msg"
+            }
         }
+
+        # === Summary ===
+        Write-Lolcat "Script complete."
+        Write-Lolcat "Log file: $logPath"
+        Write-Lolcat "Apps targeted for removal: $($UninstallPackages.Count)"
+        Write-Lolcat "Done."
     }
-
-    # === End Transcript and Summary ===
-    Stop-Transcript
-
-    Write-Lolcat "Script complete."
-    Write-Lolcat "Log file: $logPath"
-    Write-Lolcat "Apps targeted for removal: $($UninstallPackages.Count)"
-    Write-Lolcat "Done."
+    finally {
+        Stop-Transcript
+    }
 }
-
