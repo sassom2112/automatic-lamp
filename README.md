@@ -35,7 +35,7 @@ A PowerShell script that defines a reusable function `Remove-Bloatware` to safel
 ```powershell
 . .\Remove_Bloatware.ps1
 ```
-Note: The . followed by a space and the script path (.\Remove_Bloatware.ps1) is called dot-sourcing. This loads the PowerShell script into your current session, allowing you to use the Remove-Bloatware function it defines.
+> 💡 The . followed by a space and the script path (.\Remove_Bloatware.ps1) is called dot-sourcing. This loads the PowerShell script into your current session, allowing you to use the Remove-Bloatware function it defines.
 
 ▶️ 2. Use the Function
 🧼 Default Run
