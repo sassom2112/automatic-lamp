@@ -1,68 +1,46 @@
-function Show-LolcatBanner {
+function Show-GreenBanner {
     $ascii = @'
-                                                .-'''-.                    
-                                               '   _    \                  
-              __.....__      __  __   ___    /   /` '.   \.----.     .----.
-          .-''         '.   |  |/  `.'   `. .   |     \  ' \    \   /    / 
-.-,.--.  /     .-''"'-.  `. |   .-.  .-.   '|   '      |  ' '   '. /'   /  
-|  .-. |/     /________\   \|  |  |  |  |  |\    \     / /  |    |'    /   
-| |  | ||                  ||  |  |  |  |  | `.   ` ..' /   |    ||    |   
-| |  | |\    .-------------'|  |  |  |  |  |    '-...-'`    '.   `'   .'   
-| |  '-  \    '-.____...---.|  |  |  |  |  |                 \        /    
-| |       `.             .' |__|  |__|  |__|                  \      /     
-| |         `''-...... -'                                      '----'      
-|_|    __.....__                                                           
-   .-''         '.                                                         
-  /     .-''"'-.  `.                                                       
- /     /________\   \                                                      
- |                  |                                                      
- \    .-------------'                                                      
-  \    '-.____...---.                                                      
-   `.             .'                                                       
-     `''-...... -' .-'''-.                                                 
-          .---.   '   _    \                                               
-/|        |   | /   /` '.   \                                              
-||        |   |.   |     \  '                     _     _                  
-||        |   ||   '      |  '           .| /\    \\   //       .-,.--.    
-||  __    |   |\    \     / /  __      .' |_`\\  //\\ //  __    |  .-. |   
-||/'__ '. |   | `.   ` ..' /.:--.'.  .'     | \`//  \'/.:--.'.  | |  | |   
-|:/`  '. '|   |    '-...-'`/ |   \ |'--.  .-'  \|   |// |   \ | | |  | |   
-||     | ||   |            `" __ | |   |  |     '     `" __ | | | |  '-    
-||\    / '|   |             .'.''| |   |  |            .'.''| | | |        
-|/\'..' / '---'            / /   | |_  |  '.'         / /   | |_| |        
-'  `'-'`                   \ \._,\ '/  |   /          \ \._,\ '/|_|        
-       __.....__            `--'  `"   `'-'            `--'  `"            
-   .-''         '.                                                         
-  /     .-''"'-.  `.                                                       
- /     /________\   \                                                      
- |                  |                                                      
- \    .-------------'                                                      
-  \    '-.____...---.                                                      
-   `.             .'                                                       
-     `''-...... -'                                                         
+ ____    ____             _____   __  __  ____                                   
+/\  _`\ /\  _`\   /'\_/`\/\  __`\/\ \/\ \/\  _`\                                 
+\ \ \L\ \ \ \L\_\/\      \ \ \/\ \ \ \ \ \ \ \L\_\                               
+ \ \ ,  /\ \  _\L\ \ \__\ \ \ \ \ \ \ \ \ \ \  _\L                               
+  \ \ \\ \\ \ \L\ \ \ \_/\ \ \ \_\ \ \ \_/ \ \ \L\ \                             
+   \ \_\ \_\ \____/\ \_\\ \_\ \_____\ `\___/\ \____/                             
+    \/_/\/ /\/___/  \/_/ \/_/\/_____/`\/__/  \/___/                              
+                                                                                 
+                                                                                 
+ ____     __       _____   ______  ______  __      __  ______  ____    ____      
+/\  _`\  /\ \     /\  __`\/\  _  \/\__  _\/\ \  __/\ \/\  _  \/\  _`\ /\  _`\    
+\ \ \L\ \\ \ \    \ \ \/\ \ \ \L\ \/_/\ \/\ \ \/\ \ \ \ \ \L\ \ \ \L\ \ \ \L\_\  
+ \ \  _ <'\ \ \  __\ \ \ \ \ \  __ \ \ \ \ \ \ \ \ \ \ \ \  __ \ \ ,  /\ \  _\L  
+  \ \ \L\ \\ \ \L\ \\ \ \_\ \ \ \/\ \ \ \ \ \ \ \_/ \_\ \ \ \/\ \ \ \\ \\ \ \L\ \
+   \ \____/ \ \____/ \ \_____\ \_\ \_\ \ \_\ \ `\___x___/\ \_\ \_\ \_\ \_\ \____/
+    \/___/   \/___/   \/_____/\/_/\/_/  \/_/  '\/__//__/  \/_/\/_/\/_/\/ /\/___/                                                 
 '@
+    foreach ($line in $ascii -split "`n") {
+        Write-Host $line -ForegroundColor Green
+    }
+    Write-Host ""
+    Write-Host "Remove-Bloatware.ps1 by Mike & Rick" -ForegroundColor Green
+    Write-Host ""
+}
+
+function Write-Lolcat {
+    param ([string]$Text)
 
     $colors = @("Red", "Yellow", "Green", "Cyan", "Blue", "Magenta")
     $colorIndex = 0
 
-    foreach ($char in $ascii.ToCharArray()) {
-        if ($char -eq "`n") {
-            Write-Host ""
-        } else {
-            Write-Host -NoNewline $char -ForegroundColor $colors[$colorIndex]
-            # Start-Sleep -Milliseconds 5
-            $colorIndex = ($colorIndex + 1) % $colors.Count
-        }
+    foreach ($char in $Text.ToCharArray()) {
+        Write-Host -NoNewline $char -ForegroundColor $colors[$colorIndex]
+        $colorIndex = ($colorIndex + 1) % $colors.Count
     }
-
-    Write-Host "`n"
-    Write-Host "Remove-Bloatware.ps1 by Mike and Rick" -ForegroundColor Cyan
     Write-Host ""
 }
 
-
 function Remove-Bloatware {
-Show-LolcatBanner
+    Show-GreenBanner
+
 
 <#
 .SYNOPSIS
@@ -94,8 +72,8 @@ Remove-Bloatware -AppList "C:\myapps.txt"
 https://github.com/sassom2112/automatic-lamp
 
 .NOTES
-Author: MikeS
-Author: RickS
+Author: Mike
+Author: Rick
 Date: 2025-05-29
 Version: 1.0
 #>
