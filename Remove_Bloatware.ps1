@@ -50,13 +50,13 @@ function Show-LolcatBanner {
             Write-Host ""
         } else {
             Write-Host -NoNewline $char -ForegroundColor $colors[$colorIndex]
-            Start-Sleep -Milliseconds 5
+            # Start-Sleep -Milliseconds 5
             $colorIndex = ($colorIndex + 1) % $colors.Count
         }
     }
 
     Write-Host "`n"
-    Write-Host "🧹 Remove-Bloatware.ps1 by MikeS" -ForegroundColor Cyan
+    Write-Host "Remove-Bloatware.ps1 by Mike and Rick" -ForegroundColor Cyan
     Write-Host ""
 }
 
